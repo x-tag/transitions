@@ -1,8 +1,8 @@
 {
-	"name": "stub",
-	"tagName": "x-stub",
+	"name": "x-tag-transitions",
+	"tagName": "",
 	"version": "0.1.0",
-	"author": "you",
+	"author": "Daniel Buchner",
 	"description": "",
 	"demo": "demo/index.html",
 	"categories": [],
