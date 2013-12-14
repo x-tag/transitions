@@ -30,15 +30,11 @@
   });
   
   xtag.transition = function(node, name, obj){
-    var options = obj || {},
-        transitions = getTransitions(node),
-        trans = transitions[name] = transitions[name] || options;
-        trans.immediate = options.immediate || trans.immediate;
-        trans.before = options.before || trans.before;
-        trans.after = options.after || trans.after;
-    if (trans.immediate) trans.immediate();
-    if (trans.before) {
-      trans.before();
+    var transitions = getTransitions(node),
+        options = transitions[name] = obj || {};
+    if (options.immediate) options.immediate();
+    if (options.before) {
+      options.before();
       xtag.requestFrame(function(){
         xtag.requestFrame(function(){
           node.setAttribute('transition', name);
