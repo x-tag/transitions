@@ -1,10 +1,19 @@
 (function(){
 
-  var replaceSpaces = / /g,
+  var matchNum = /[1-9]/,
+      replaceSpaces = / /g,
       captureTimes = /(\d|\d+?[.]?\d+?)(s|ms)(?!\w)/gi;
-    
+
   function getTransitions(node){
     return node.__transitions__ = node.__transitions__ || {};
+  }
+  
+  function startTransition(node, name, transitions){
+    var style = getComputedStyle(node);
+    node.setAttribute('transition', name);
+    if (transitions[name].after && !(style.transitionDuration || style[xtag.prefix.js + 'TransitionDuration']).match(matchNum)){
+      transitions[name].after();
+    }
   }
   
   xtag.addEvents(document, {
@@ -37,11 +46,11 @@
       options.before();
       xtag.requestFrame(function(){
         xtag.requestFrame(function(){
-          node.setAttribute('transition', name);
+          startTransition(node, name, transitions);
         });
       });
     }
-    else node.setAttribute('transition', name);
+    else startTransition(node, name, transitions);
   };
   
   xtag.pseudos.transition = {
