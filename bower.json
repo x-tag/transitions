@@ -1,8 +1,9 @@
 {
   "name": "x-tag-transitions",
-  "description": "Easy-peasy transitioning for X-Tag components ",
-  "version": "0.1.2",
+  "description": "Easy-peasy transitioning for X-Tag components.",
+  "version": "0.1.4",
   "keywords": [
+    "pseudo",
     "web-components",
     "x-tag"
   ],
