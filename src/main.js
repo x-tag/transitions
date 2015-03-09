@@ -26,7 +26,7 @@
     var style = getComputedStyle(node),
         after = transitions[name].after;
     node.setAttribute('transition', name);
-    if (after && !style[transDur].match(matchNum)) after();
+    if (after && !style[transDur].match(matchNum)) after.call(node);
   }
   
   xtag.addEvents(document, {
@@ -46,7 +46,7 @@
         });
         prop = props[prop];
         if (!prop) throw new SyntaxError('No matching transition property found');
-        else if (e.propertyName == prop && transitions[name].after) transitions[name].after();
+        else if (e.propertyName == prop && transitions[name].after) transitions[name].after.call(node);
       }
     }
   });
@@ -54,9 +54,9 @@
   xtag.transition = function(node, name, obj){
     var transitions = getTransitions(node),
         options = transitions[name] = obj || {};
-    if (options.immediate) options.immediate();
+    if (options.immediate) options.immediate.call(node);
     if (options.before) {
-      options.before();
+      options.before.call(node);
       if (ready) xtag.skipTransition(node, function(){
         startTransition(node, name, transitions);
       });
