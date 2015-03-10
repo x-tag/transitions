@@ -20,6 +20,7 @@
   
   function startTransition(node, name, transitions){
     node.setAttribute('transition', name);
+    node.setAttribute('transitioning', '');
     var i = max = 0,
         transNames = [],
         style = getComputedStyle(node),
@@ -45,9 +46,10 @@
           name = node.getAttribute('transition');
       if (name) {
         var transition = getTransitions(node)[name];
-        if (transition.transNames.indexOf(e.propertyName) > -1 && transition.after) {
+        if (transition.transNames.indexOf(e.propertyName) > -1) {
           transition.transNames = [];
-          transition.after.call(node);
+          node.removeAttribute('transitioning');
+          if (transition.after) transition.after.call(node);
         }
       }
     }
