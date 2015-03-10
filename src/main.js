@@ -20,7 +20,6 @@
   
   function startTransition(node, name, transitions){
     node.setAttribute('transition', name);
-    node.setAttribute('transitioning', '');
     var i = max = 0,
         transNames = [],
         style = getComputedStyle(node),
@@ -58,6 +57,7 @@
   xtag.transition = function(node, name, obj){
     var transitions = getTransitions(node),
         options = transitions[name] = obj || {};
+    node.setAttribute('transitioning', name);
     if (options.immediate) options.immediate.call(node);
     if (options.before) {
       options.before.call(node);
@@ -68,7 +68,9 @@
         startTransition(node, name, transitions);
       });
     }
-    else startTransition(node, name, transitions);
+    else xtag.skipFrame(function(){
+      startTransition(node, name, transitions);
+    });
   };
   
   xtag.pseudos.transition = {
