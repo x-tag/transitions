@@ -26,7 +26,7 @@
         transitions = getTransitions(node),
         after = transitions[name].after,
         transProps = style[transProp].replace(replaceSpaces, '').split(',');
-    
+        
     style[transDur].replace(captureTimes, function(match, time, unit){
       var time = parseFloat(time) * (unit === 's' ? 1000 : 1);
       if (time >= max) {
@@ -55,22 +55,24 @@
   });
   
   xtag.transition = function(node, name, obj){
-    var transitions = getTransitions(node),
-        options = transitions[name] = obj || {};
-    node.setAttribute('transitioning', name);
-    if (options.immediate) options.immediate.call(node);
-    if (options.before) {
-      options.before.call(node);
-      if (ready) xtag.skipTransition(node, function(){
-        startTransition(node, name, transitions);
-      });
+    if (node.getAttribute('transition') != name){
+      var transitions = getTransitions(node),
+          options = transitions[name] = obj || {};
+      node.setAttribute('transitioning', name);
+      if (options.immediate) options.immediate.call(node);
+      if (options.before) {
+        options.before.call(node);
+        if (ready) xtag.skipTransition(node, function(){
+          startTransition(node, name, transitions);
+        });
+        else xtag.skipFrame(function(){
+          startTransition(node, name, transitions);
+        });
+      }
       else xtag.skipFrame(function(){
         startTransition(node, name, transitions);
       });
     }
-    else xtag.skipFrame(function(){
-      startTransition(node, name, transitions);
-    });
   };
   
   xtag.pseudos.transition = {
