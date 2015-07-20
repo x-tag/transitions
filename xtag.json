@@ -1,7 +1,7 @@
 {
 	"name": "x-tag-transitions",
 	"tagName": "",
-	"version": "0.1.9",
+	"version": "0.1.11",
 	"author": "Daniel Buchner",
 	"description": "",
 	"demo": "demo/index.html",
