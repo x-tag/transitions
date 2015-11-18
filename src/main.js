@@ -31,7 +31,7 @@
         transProps = style[transProp].replace(replaceSpaces, '').split(',');
 
     style[transDur].replace(captureTimes, function(match, time, unit){
-      var time = parseFloat(time) * (unit === 's' ? 1000 : 1);
+      time = parseFloat(time) * (unit === 's' ? 1000 : 1);
       if (time >= max) max = time;
       i++;
     });
