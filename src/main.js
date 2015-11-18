@@ -24,7 +24,7 @@
 
     node.setAttribute('transition', name);
 
-    var i = max = 0,
+    var max = 0,
         style = getComputedStyle(node),
         transition = transitions[name],
         after = transition.after,
@@ -33,7 +33,6 @@
     style[transDur].replace(captureTimes, function(match, time, unit){
       time = parseFloat(time) * (unit === 's' ? 1000 : 1);
       if (time >= max) max = time;
-      i++;
     });
 
     transition.timer = setTimeout(function(){
