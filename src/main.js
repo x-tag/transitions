@@ -6,16 +6,17 @@
       transDur = transPre + 'ransitionDuration',
       transProp = transPre + 'ransitionProperty',
       ready = document.readyState == 'complete' ?
-        xtag.skipFrame(function(){ ready = false }) :
+        xtag.skipFrame(function(){ ready = false; }) :
         xtag.addEvent(document, 'readystatechange', function(){
           if (document.readyState == 'complete') {
-            xtag.skipFrame(function(){ ready = false });
+            xtag.skipFrame(function(){ ready = false; });
             xtag.removeEvent(document, 'readystatechange', ready);
           }
         });
 
   function getTransitions(node){
-    return node.__transitions__ = node.__transitions__ || {};
+    node.__transitions__ = node.__transitions__ || {};
+    return node.__transitions__;
   }
 
   function startTransition(node, name, transitions){
@@ -77,9 +78,9 @@
             args = arguments;
         options[when] = function(){
           return fn.apply(this, args);
-        }
+        };
         xtag.transition(this, name, options);
-      }
+      };
     }
-  }
+  };
 })();
