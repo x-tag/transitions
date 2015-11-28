@@ -28,20 +28,25 @@
     var max = 0,
         style = getComputedStyle(node),
         transition = transitions[name],
-        after = transition.after,
-        transProps = style[transProp].replace(replaceSpaces, '').split(',');
+        after = transition.after;
 
-    style[transDur].replace(captureTimes, function(match, time, unit){
-      time = parseFloat(time) * (unit === 's' ? 1000 : 1);
-      if (time >= max) max = time;
-    });
+    if (style[transProp]) {
+      transProps = style[transProp].replace(replaceSpaces, '').split(',');
+    }
+
+    if (style[transDur]) {
+      style[transDur].replace(captureTimes, function(match, time, unit){
+        time = parseFloat(time) * (unit === 's' ? 1000 : 1);
+        if (time >= max) max = time;
+      });
+    }
 
     transition.timer = setTimeout(function(){
       node.removeAttribute('transitioning');
       if (transition.after) transition.after.call(node);
     }, max);
 
-    if (after && !style[transDur].match(matchNum)) after.call(node);
+    if (after && style[transDur] && !style[transDur].match(matchNum)) after.call(node);
   }
 
   xtag.transition = function(node, name, obj){
