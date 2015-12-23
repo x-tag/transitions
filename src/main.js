@@ -1,6 +1,5 @@
 (function(){
-  var matchNum = /[1-9]/,
-      replaceSpaces = / /g,
+  var replaceSpaces = / /g,
       captureTimes = /(\d|\d+?[.]?\d+?)(s|ms)(?!\w)/gi,
       transPre = 'transition' in getComputedStyle(document.documentElement) ? 't' : xtag.prefix.js + 'T',
       transDur = transPre + 'ransitionDuration',
@@ -25,12 +24,9 @@
     node.setAttribute('transition', name);
 
     var max = 0,
-        style = getComputedStyle(node),
-        transition = transitions[name],
-        after = transition.after,
-        transProps = style[transProp].replace(replaceSpaces, '').split(',');
+        transition = transitions[name];
 
-    style[transDur].replace(captureTimes, function(match, time, unit){
+    getComputedStyle(node)[transDur].replace(captureTimes, function(match, time, unit){
       time = parseFloat(time) * (unit === 's' ? 1000 : 1);
       if (time >= max) max = time;
     });
@@ -39,8 +35,6 @@
       node.removeAttribute('transitioning');
       if (transition.after) transition.after.call(node);
     }, max);
-
-    if (after && !style[transDur].match(matchNum)) after.call(node);
   }
 
   xtag.transition = function(node, name, obj){
