@@ -13,23 +13,22 @@
           }
         });
 
-  function getTransitions(node){
-    return node.__transitions__ = node.__transitions__ || {};
-  }
-
   function startTransition(node, name, transitions){
     var current = node.getAttribute('transition');
     if (transitions[current]) clearTimeout(transitions[current].timer);
 
     node.setAttribute('transition', name);
 
-    var max = 0,
-        transition = transitions[name];
+    var transition = transitions[name],
+        max = transition.max;
 
-    getComputedStyle(node)[transDur].replace(captureTimes, function(match, time, unit){
-      time = parseFloat(time) * (unit === 's' ? 1000 : 1);
-      if (time >= max) max = time;
-    });
+    if (isNaN(max)) {
+      max = transition.max = 0;
+      getComputedStyle(node)[transDur].replace(captureTimes, function(match, time, unit){
+        time = parseFloat(time) * (unit === 's' ? 1000 : 1);
+        if (time >= max) max = transition.max = time;
+      });
+    }
 
     transition.timer = setTimeout(function(){
       node.removeAttribute('transitioning');
@@ -40,7 +39,7 @@
   xtag.transition = function(node, name, obj){
     if (node.getAttribute('transition') != name){
 
-      var transitions = getTransitions(node),
+      var transitions = node.__transitions__ || (node.__transitions__ = {}),
           options = transitions[name] = obj || {};
 
       node.setAttribute('transitioning', name);
