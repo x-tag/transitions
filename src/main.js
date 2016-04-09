@@ -33,6 +33,7 @@
     transition.timer = setTimeout(function(){
       node.removeAttribute('transitioning');
       if (transition.after) transition.after.call(node);
+      xtag.fireEvent(node, name + '-transition');
     }, max);
   }
 
