@@ -4,12 +4,12 @@
       transPre = 'transition' in getComputedStyle(document.documentElement) ? 't' : xtag.prefix.js + 'T',
       transDel = transPre + 'ransitionDelay',
       transDur = transPre + 'ransitionDuration',
-      ready = document.readyState == 'complete' ?
-        xtag.skipFrame(function(){ ready = false }) :
+      loading = document.readyState == 'complete' ?
+        xtag.skipFrame(function(){ loading = false }) :
         xtag.addEvent(document, 'readystatechange', function(){
           if (document.readyState == 'complete') {
-            xtag.skipFrame(function(){ ready = false });
-            xtag.removeEvent(document, 'readystatechange', ready);
+            xtag.skipFrame(function(){ loading = false });
+            xtag.removeEvent(document, 'readystatechange', loading);
           }
         });
 
@@ -40,7 +40,7 @@
       node.removeAttribute('transitioning');
       if (transition.after) transition.after.call(node);
       xtag.fireEvent(node, name + '-transition');
-    }, max);
+    }, loading ? 0 : max);
   }
 
   xtag.transition = function(node, name, obj){
@@ -49,13 +49,13 @@
       var transitions = node.__transitions__ || (node.__transitions__ = {}),
           options = transitions[name] = obj || {};
 
-      node.setAttribute('transitioning', name);
+      if (!loading) node.setAttribute('transitioning', name);
 
       if (options.immediate) options.immediate.call(node);
 
       if (options.before) {
         options.before.call(node);
-        if (ready) xtag.skipTransition(node, function(){
+        if (loading) xtag.skipTransition(node, function(){
           startTransition(node, name, transitions);
         });
         else xtag.skipFrame(function(){
