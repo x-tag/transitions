@@ -47,7 +47,7 @@
     if (node.getAttribute('transition') != name){
 
       var transitions = node.__transitions__ || (node.__transitions__ = {}),
-          options = transitions[name] = obj || {};
+          options = transitions[name] = obj || transitions[name] || {};
 
       if (!loading) node.setAttribute('transitioning', name);
 

@@ -1,6 +1,6 @@
 {
   "name": "pseudo-transitions",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "dependencies": {},
   "devDependencies": {
     "bower": "~1.2.4",
